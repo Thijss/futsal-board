@@ -69,7 +69,7 @@ body {
 }
 
 .piece.dragging { cursor: grabbing; z-index: 2; scale: 1.13; }
-.piece:focus-visible, .draw-button:focus-visible, .reset-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.piece:focus-visible, .draw-button:focus-visible, .reset-button:focus-visible, .fullscreen-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .piece::before { content: ""; display: block; border-radius: 50%; }
 .player::before { width: 5.5cqw; height: 5.5cqw; border: 1px solid #d5edf0; background: #16536a; box-shadow: 0 2px 5px #392a2488; }
 .player.away::before { border-color: #ffe0d9; background: #bc4852; }
@@ -123,6 +123,29 @@ body {
   font-weight: 600;
   line-height: 1;
 }
+
+.fullscreen-button {
+  position: absolute;
+  bottom: 2px;
+  left: 3cqw;
+  z-index: 4;
+  width: min(24px, calc(6.875cqw - 2px));
+  height: min(24px, calc(6.875cqw - 2px));
+  display: grid;
+  place-items: center;
+  padding: 3px;
+  border: 1px solid #ffffff55;
+  border-radius: 3px;
+  color: #fff;
+  background: #17445fcb;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.fullscreen-button[hidden] { display: none; }
+.fullscreen-button svg { width: 100%; height: 100%; }
+.fullscreen-button[aria-pressed="true"] .fullscreen-enter,
+.fullscreen-button:not([aria-pressed="true"]) .fullscreen-exit { display: none; }
 
 .draw-button[aria-pressed="true"] { background: #368a4e; }
 

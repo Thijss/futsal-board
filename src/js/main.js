@@ -4,6 +4,7 @@ const pitch = document.querySelector("#pitch");
 const piecesLayer = document.querySelector("#pieces");
 const drawings = document.querySelector("#drawings");
 const drawButton = document.querySelector("#drawButton");
+const fullscreenButton = document.querySelector("#fullscreenButton");
 
 let pieces = initialPieces();
 let gesture = null;
@@ -138,5 +139,29 @@ document.querySelector("#resetButton").addEventListener("click", () => {
   renderPieces();
   drawings.replaceChildren();
 });
+
+if (document.fullscreenEnabled && document.documentElement.requestFullscreen) {
+  function updateFullscreenButton() {
+    const isFullscreen = document.fullscreenElement !== null;
+    fullscreenButton.setAttribute("aria-pressed", String(isFullscreen));
+    fullscreenButton.setAttribute("aria-label", isFullscreen ? "Exit full screen" : "Enter full screen");
+    fullscreenButton.title = isFullscreen ? "Exit full screen" : "Enter full screen";
+  }
+
+  document.addEventListener("fullscreenchange", updateFullscreenButton);
+  fullscreenButton.addEventListener("click", async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (error) {
+      console.error("Could not toggle full-screen mode.", error);
+    }
+  });
+} else {
+  fullscreenButton.hidden = true;
+}
 
 renderPieces();
