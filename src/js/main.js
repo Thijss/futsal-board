@@ -10,7 +10,9 @@ function renderPieces() {
   piecesLayer.replaceChildren(...pieces.map((piece) => {
     const element = document.createElement("button");
     element.type = "button";
-    element.className = piece.id === "ball" ? "piece ball" : `piece player ${piece.team}`;
+    element.className = piece.id === "ball"
+      ? "piece ball"
+      : `piece player ${piece.team}${piece.number === 1 ? " goalkeeper" : ""}`;
     element.dataset.id = piece.id;
     element.setAttribute("aria-label", piece.id === "ball" ? "Ball" : `${piece.team === "home" ? "Home" : "Away"} player ${piece.number}`);
     element.title = element.getAttribute("aria-label");

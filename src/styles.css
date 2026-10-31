@@ -73,6 +73,7 @@ body {
 .piece::before { content: ""; display: block; border-radius: 50%; }
 .player::before { width: 5.5cqw; height: 5.5cqw; border: 1px solid #d5edf0; background: #16536a; box-shadow: 0 2px 5px #392a2488; }
 .player.away::before { border-color: #ffe0d9; background: #bc4852; }
+.player.goalkeeper::before { border-color: #d7f0d7; background: #368a4e; }
 .ball::before { width: 2.7cqw; height: 2.7cqw; border: 1px solid #1e3036; background: #f7f5e9; box-shadow: 0 1px 3px #081c1b88; }
 
 .reset-button {
