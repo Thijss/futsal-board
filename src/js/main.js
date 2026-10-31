@@ -2,9 +2,14 @@ import { COURT_HEIGHT, COURT_WIDTH, initialPieces, pointOnCourt, positionPiece }
 
 const pitch = document.querySelector("#pitch");
 const piecesLayer = document.querySelector("#pieces");
+const drawings = document.querySelector("#drawings");
+const drawButton = document.querySelector("#drawButton");
 
 let pieces = initialPieces();
 let gesture = null;
+let drawMode = false;
+let drawingPath = null;
+let drawingPointerId = null;
 
 function renderPieces() {
   piecesLayer.replaceChildren(...pieces.map((piece) => {
@@ -13,6 +18,7 @@ function renderPieces() {
     element.className = piece.id === "ball"
       ? "piece ball"
       : `piece player ${piece.team}${piece.number === 1 ? " goalkeeper" : ""}`;
+    element.disabled = drawMode;
     element.dataset.id = piece.id;
     element.setAttribute("aria-label", piece.id === "ball" ? "Ball" : `${piece.team === "home" ? "Home" : "Away"} player ${piece.number}`);
     element.title = element.getAttribute("aria-label");
@@ -31,7 +37,18 @@ function courtPoint(event) {
 }
 
 pitch.addEventListener("pointerdown", (event) => {
-  if (event.button !== 0 || gesture) return;
+  if (event.button !== 0 || gesture || drawingPointerId !== null) return;
+  if (drawMode) {
+    if (event.target.closest("button")) return;
+    const point = courtPoint(event);
+    drawingPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    drawingPath.setAttribute("d", `M ${point.x} ${point.y}`);
+    drawings.append(drawingPath);
+    drawingPointerId = event.pointerId;
+    pitch.setPointerCapture(event.pointerId);
+    event.preventDefault();
+    return;
+  }
   let element = null;
   let shortestDistance = 24;
   for (const candidate of piecesLayer.children) {
@@ -47,6 +64,7 @@ pitch.addEventListener("pointerdown", (event) => {
   if (!piece) return;
   const point = courtPoint(event);
   gesture = {
+    pointerId: event.pointerId,
     id: piece.id,
     offsetX: (piece.x / 100) * COURT_WIDTH - point.x,
     offsetY: (piece.y / 100) * COURT_HEIGHT - point.y,
@@ -57,7 +75,12 @@ pitch.addEventListener("pointerdown", (event) => {
 });
 
 pitch.addEventListener("pointermove", (event) => {
-  if (!gesture) return;
+  if (drawingPointerId === event.pointerId && drawingPath) {
+    const point = courtPoint(event);
+    drawingPath.setAttribute("d", `${drawingPath.getAttribute("d")} L ${point.x} ${point.y}`);
+    return;
+  }
+  if (!gesture || gesture.pointerId !== event.pointerId) return;
   const point = courtPoint(event);
   const index = pieces.findIndex((piece) => piece.id === gesture.id);
   pieces[index] = positionPiece(pieces[index], {
@@ -67,8 +90,13 @@ pitch.addEventListener("pointermove", (event) => {
   setPiecePosition(piecesLayer.querySelector(`[data-id="${gesture.id}"]`), pieces[index]);
 });
 
-function finishGesture() {
-  if (!gesture) return;
+function finishGesture(event) {
+  if (drawingPointerId === event.pointerId) {
+    drawingPointerId = null;
+    drawingPath = null;
+    return;
+  }
+  if (!gesture || gesture.pointerId !== event.pointerId) return;
   piecesLayer.querySelector(".dragging")?.classList.remove("dragging");
   gesture = null;
 }
@@ -82,7 +110,7 @@ piecesLayer.addEventListener("keydown", (event) => {
     ArrowUp: [0, -1], ArrowDown: [0, 1],
   };
   const direction = directions[event.key];
-  if (!direction) return;
+  if (!direction || drawMode) return;
   const element = event.target.closest(".piece");
   if (!element) return;
   event.preventDefault();
@@ -96,9 +124,13 @@ piecesLayer.addEventListener("keydown", (event) => {
   setPiecePosition(element, pieces[index]);
 });
 
-document.querySelector("#resetButton").addEventListener("click", () => {
-  pieces = initialPieces();
-  renderPieces();
+drawButton.addEventListener("click", () => {
+  drawMode = !drawMode;
+  pitch.classList.toggle("drawing-mode", drawMode);
+  drawButton.setAttribute("aria-pressed", String(drawMode));
+  for (const piece of piecesLayer.children) {
+    piece.disabled = drawMode;
+  }
 });
 
 renderPieces();

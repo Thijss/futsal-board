@@ -50,7 +50,7 @@ body {
 
 .pitch-lines .pitch-mark { fill: #416e89; stroke: none; }
 .pitch-lines .goal { stroke: #416e89; stroke-width: 3; }
-.pieces { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.pieces { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 
 .piece {
   position: absolute;
@@ -69,33 +69,59 @@ body {
 }
 
 .piece.dragging { cursor: grabbing; z-index: 2; scale: 1.13; }
-.piece:focus-visible, .reset-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.piece:focus-visible, .draw-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .piece::before { content: ""; display: block; border-radius: 50%; }
 .player::before { width: 5.5cqw; height: 5.5cqw; border: 1px solid #d5edf0; background: #16536a; box-shadow: 0 2px 5px #392a2488; }
 .player.away::before { border-color: #ffe0d9; background: #bc4852; }
 .player.goalkeeper::before { border-color: #d7f0d7; background: #368a4e; }
 .ball::before { width: 2.7cqw; height: 2.7cqw; border: 1px solid #1e3036; background: #f7f5e9; box-shadow: 0 1px 3px #081c1b88; }
 
-.reset-button {
+.drawings {
   position: absolute;
-  z-index: 2;
-  top: max(42px, env(safe-area-inset-top));
-  right: max(30px, env(safe-area-inset-right));
-  width: 44px;
-  height: 44px;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.drawings path {
+  fill: none;
+  stroke: #17445f;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pitch.drawing-mode { cursor: crosshair; }
+.pitch.drawing-mode .pieces, .pitch.drawing-mode .piece { pointer-events: none; }
+
+.draw-button {
+  position: absolute;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 3;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   padding: 0;
   border: 1px solid #ffffff55;
-  border-radius: 50%;
+  border-radius: 12px;
   color: #fff;
   background: #17445fcb;
+  box-shadow: 0 2px 8px #392a2488;
   cursor: pointer;
   touch-action: manipulation;
 }
 
-.reset-button:hover { background: #17445f; }
-.reset-button svg { width: 21px; height: 21px; }
+.draw-button { left: max(16px, env(safe-area-inset-left)); }
+
+.draw-button[aria-pressed="true"] { background: #368a4e; }
+
+.draw-button:hover { background: #17445f; }
+.draw-button[aria-pressed="true"]:hover { background: #2e7542; }
+.draw-button svg { width: 21px; height: 21px; }
 
 @media (min-width: 700px) {
   .pitch { box-shadow: 0 0 80px #050d0da8; }
