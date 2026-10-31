@@ -69,7 +69,7 @@ body {
 }
 
 .piece.dragging { cursor: grabbing; z-index: 2; scale: 1.13; }
-.piece:focus-visible, .draw-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.piece:focus-visible, .draw-button:focus-visible, .reset-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .piece::before { content: ""; display: block; border-radius: 50%; }
 .player::before { width: 5.5cqw; height: 5.5cqw; border: 1px solid #d5edf0; background: #16536a; box-shadow: 0 2px 5px #392a2488; }
 .player.away::before { border-color: #ffe0d9; background: #bc4852; }
@@ -97,12 +97,20 @@ body {
 .pitch.drawing-mode { cursor: crosshair; }
 .pitch.drawing-mode .pieces, .pitch.drawing-mode .piece { pointer-events: none; }
 
-.draw-button {
+.board-controls {
   position: absolute;
-  bottom: max(16px, env(safe-area-inset-bottom));
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  left: max(16px, env(safe-area-inset-left));
   z-index: 3;
-  width: 48px;
-  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.draw-button, .reset-button {
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -115,13 +123,11 @@ body {
   touch-action: manipulation;
 }
 
-.draw-button { left: max(16px, env(safe-area-inset-left)); }
-
 .draw-button[aria-pressed="true"] { background: #368a4e; }
 
-.draw-button:hover { background: #17445f; }
+.draw-button:hover, .reset-button:hover { background: #17445f; }
 .draw-button[aria-pressed="true"]:hover { background: #2e7542; }
-.draw-button svg { width: 21px; height: 21px; }
+.draw-button svg, .reset-button svg { width: 21px; height: 21px; }
 
 @media (min-width: 700px) {
   .pitch { box-shadow: 0 0 80px #050d0da8; }

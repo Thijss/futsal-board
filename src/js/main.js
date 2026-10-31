@@ -133,4 +133,10 @@ drawButton.addEventListener("click", () => {
   }
 });
 
+document.querySelector("#resetButton").addEventListener("click", () => {
+  pieces = initialPieces();
+  renderPieces();
+  drawings.replaceChildren();
+});
+
 renderPieces();
