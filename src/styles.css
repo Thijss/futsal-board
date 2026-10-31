@@ -1,6 +1,6 @@
 :root {
   font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
-  background: #0c2838;
+  background: #383430;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
 }
@@ -21,7 +21,9 @@ body {
   width: min(100vw, 50dvh);
   aspect-ratio: 1 / 2;
   overflow: hidden;
-  background: linear-gradient(155deg, #2581ae, #176c96 55%, #11577e);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 23px, #99785418 23px 24px),
+    linear-gradient(155deg, #e6d5bd, #d7c2a7 55%, #cbb095);
   container-type: inline-size;
   touch-action: none;
   user-select: none;
@@ -33,7 +35,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 48%, #062c4840);
+  background: radial-gradient(ellipse at center, transparent 48%, #6c4a2830);
 }
 
 .pitch-lines {
@@ -42,12 +44,12 @@ body {
   width: 100%;
   height: 100%;
   fill: none;
-  stroke: #f2f7f5d9;
+  stroke: #416e89d9;
   stroke-width: 2.4;
 }
 
-.pitch-lines .pitch-mark { fill: #f2f7f5; stroke: none; }
-.pitch-lines .goal { stroke: #f2f7f5; stroke-width: 3; }
+.pitch-lines .pitch-mark { fill: #416e89; stroke: none; }
+.pitch-lines .goal { stroke: #416e89; stroke-width: 3; }
 .pieces { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 
 .piece {
@@ -69,8 +71,8 @@ body {
 .piece.dragging { cursor: grabbing; z-index: 2; scale: 1.13; }
 .piece:focus-visible, .reset-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .piece::before { content: ""; display: block; border-radius: 50%; }
-.player::before { width: 5.5cqw; height: 5.5cqw; border: 1px solid #fff2bd; background: #f4c848; box-shadow: 0 2px 5px #081c1b88; }
-.player.away::before { border-color: #ffd8d3; background: #d75259; }
+.player::before { width: 5.5cqw; height: 5.5cqw; border: 1px solid #d5edf0; background: #16536a; box-shadow: 0 2px 5px #392a2488; }
+.player.away::before { border-color: #ffe0d9; background: #bc4852; }
 .ball::before { width: 2.7cqw; height: 2.7cqw; border: 1px solid #1e3036; background: #f7f5e9; box-shadow: 0 1px 3px #081c1b88; }
 
 .reset-button {
@@ -86,12 +88,12 @@ body {
   border: 1px solid #ffffff55;
   border-radius: 50%;
   color: #fff;
-  background: #0a3b5cbe;
+  background: #17445fcb;
   cursor: pointer;
   touch-action: manipulation;
 }
 
-.reset-button:hover { background: #0a3b5c; }
+.reset-button:hover { background: #17445f; }
 .reset-button svg { width: 21px; height: 21px; }
 
 @media (min-width: 700px) {
